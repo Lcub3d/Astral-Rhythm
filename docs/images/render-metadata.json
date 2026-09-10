@@ -1,0 +1,38 @@
+[
+  {
+    "desktop_capture": false,
+    "dpi": 192,
+    "fixture": "2026-09-08 13:40",
+    "height": 764,
+    "name": "zh-CN-dark",
+    "renderer": "Win32 GDI + application pixel compositor",
+    "width": 640
+  },
+  {
+    "desktop_capture": false,
+    "dpi": 192,
+    "fixture": "2026-09-08 13:40",
+    "height": 764,
+    "name": "zh-CN-light",
+    "renderer": "Win32 GDI + application pixel compositor",
+    "width": 640
+  },
+  {
+    "desktop_capture": false,
+    "dpi": 192,
+    "fixture": "2026-09-08 13:40",
+    "height": 928,
+    "name": "en-dark",
+    "renderer": "Win32 GDI + application pixel compositor",
+    "width": 640
+  },
+  {
+    "desktop_capture": false,
+    "dpi": 192,
+    "fixture": "2026-09-08 13:40",
+    "height": 928,
+    "name": "en-light",
+    "renderer": "Win32 GDI + application pixel compositor",
+    "width": 640
+  }
+]
