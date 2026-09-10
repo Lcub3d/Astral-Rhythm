@@ -2,10 +2,16 @@
 
 package main
 
-// V3 uses a native, per-pixel alpha surface for both windows. The taskbar
+import "time"
+
+// The UI uses a native, per-pixel alpha surface for both windows. The taskbar
 // button has no visual plate; the two separate cards reproduce the reference.
 func (a *App) paintWidget(dst *PixelBuffer) {
-	now := wallClockNow()
+	a.paintWidgetAt(dst, wallClockNow())
+}
+
+// A shared clock input makes native documentation renders reproducible.
+func (a *App) paintWidgetAt(dst *PixelBuffer, now time.Time) {
 	day, hour := a.Data.DayAt(now), a.Data.HourAt(now)
 	light := a.TaskbarLight
 	// An alpha of 1/255 keeps the entire label pair clickable/draggable under

@@ -3,16 +3,7 @@ name: Windows build and tests
 on:
   push:
     branches: [main]
-    paths:
-      - 'src/**'
-      - 'tools/**'
-      - 'data.json'
-      - 'locales/**'
-      - '表格/**'
-      - '*.cmd'
-      - 'AstralRhythm.ico'
-      - '.gitattributes'
-      - '.github/workflows/windows.yml'
+    paths: ['src/**', 'tools/**', 'data.json', 'locales/**', '表格/**', '*.cmd', 'AstralRhythm.ico', '.gitattributes', '.github/workflows/windows.yml']
   pull_request:
   workflow_dispatch:
   workflow_call:
@@ -43,7 +34,6 @@ jobs:
         run: |
           go test -v ./...
           go vet ./...
-
   windows:
     runs-on: windows-latest
     needs: logic
@@ -66,8 +56,10 @@ jobs:
           python-version: '3.13'
       - name: Regenerate Windows icon, version and DPI resources
         run: python tools/build_resources.py
-      - name: Native Windows unit tests
+      - name: Native Windows unit tests and reproducible UI renders
         working-directory: src
+        env:
+          ASTRAL_DOCS_DIR: ../docs/images
         run: |
           New-Item -ItemType Directory -Force ../validation | Out-Null
           go test -v ./... 2>&1 | Tee-Object ../validation/go-test-windows.log
@@ -86,9 +78,12 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: Astral-Rhythm-Windows-x64-and-source
-          path: |
-            dist/Astral-Rhythm_v*_Windows_x64.zip
-            dist/Astral-Rhythm_v*_Source.zip
-            dist/Astral-Rhythm_SHA256.txt
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Astral-Rhythm-native-docs
+          path: docs/images/*
           if-no-files-found: error
           retention-days: 30
