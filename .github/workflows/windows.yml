@@ -3,7 +3,16 @@ name: Windows build and tests
 on:
   push:
     branches: [main]
-    paths: ['src/**', 'tools/**', 'data.json', 'locales/**', '表格/**']
+    paths:
+      - 'src/**'
+      - 'tools/**'
+      - 'data.json'
+      - 'locales/**'
+      - '表格/**'
+      - '*.cmd'
+      - 'AstralRhythm.ico'
+      - '.gitattributes'
+      - '.github/workflows/windows.yml'
   pull_request:
   workflow_dispatch:
   workflow_call:
