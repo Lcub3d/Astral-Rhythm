@@ -1,0 +1,48 @@
+name: Release tagged Windows build
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    uses: ./.github/workflows/windows.yml
+    permissions:
+      contents: read
+    with:
+      revision: ${{ github.sha }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: Astral-Rhythm-Windows-x64-and-source
+          path: dist
+      - name: Check tag matches the source version
+        shell: python
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          from pathlib import Path
+          import os, re
+          version = re.search(r'const appVersion = "([0-9]+\.[0-9]+\.[0-9]+)"', Path('src/locale.go').read_text(encoding='utf-8'))[1]
+          if os.environ['RELEASE_TAG'] != 'v' + version:
+              raise SystemExit('Tag must match appVersion in src/locale.go')
+      - name: Publish without overwriting existing release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$RELEASE_TAG" dist/* --verify-tag --title "Astral Rhythm $RELEASE_TAG" --notes-file RELEASE_NOTES.md
