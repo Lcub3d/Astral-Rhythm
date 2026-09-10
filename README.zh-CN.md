@@ -8,9 +8,9 @@
 
 ## 下载和启动
 
-从 [Releases](https://github.com/Lcub3d/Astral-Rhythm/releases) 下载 **Windows x64 ZIP**。先退出旧版，完整解压，再双击 **`AstralRhythm.exe`**。成品不需要安装 Go、Python、.NET 或 WebView。
+打开 [Windows 自动构建](https://github.com/Lcub3d/Astral-Rhythm/actions/workflows/windows.yml)，选择一次成功运行，在 **Artifacts** 中下载 **Astral-Rhythm-Windows-x64-and-source**，然后解开其中的 **Windows x64 ZIP**。GitHub 下载 Actions 产物需要登录。以后有正式发布时，也可从 [Releases](https://github.com/Lcub3d/Astral-Rhythm/releases) 下载。
 
-**Code → Download ZIP** 下载的是源码，不是可直接运行的软件。
+先退出旧版，完整解压，再双击 **`AstralRhythm.exe`**。成品不需要安装 Go、Python、.NET 或 WebView。**Code → Download ZIP** 下载的是源码，不是可直接运行的软件。
 
 任务栏第一行是**曜星**，第二行是**时辰**。鼠标悬停显示卡片；单击固定或收起；按住左键拖动；右键打开设置。
 
@@ -48,7 +48,7 @@
 
 重建版本资源：`python tools/build_resources.py`，仅需 Python 标准库。美术素材已随源码提交，重建素材另需 Pillow、CairoSVG：`python tools/build_assets.py`。程序使用 Windows 系统字体，不分发字体文件。
 
-`python tools/package.py` 在 `dist/` 生成便携包、源码包和 SHA-256 校验文件。[GitHub Actions](https://github.com/Lcub3d/Astral-Rhythm/actions) 包含 Linux 单元测试与 vet、Windows 原生单元测试、x64 编译和打包。成功运行后可下载构建产物；版本标签用于发布 Release。PR 不获得发布写权限。
+`python tools/package.py` 在 `dist/` 生成便携包、源码包和 SHA-256 校验文件。[GitHub Actions](https://github.com/Lcub3d/Astral-Rhythm/actions) 包含 Linux 单元测试与 vet、Windows 原生单元测试、x64 编译和打包。成功运行后可下载构建产物；推送与源码版本一致的版本标签后，发布流程会在测试通过后尝试创建 Release，需要仓库允许相应发布权限。PR 不获得发布写权限。
 
 ## 验证范围
 
