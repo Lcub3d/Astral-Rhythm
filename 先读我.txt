@@ -1,0 +1,8 @@
+七曜工作法 / Astral Rhythm
+Work in rhythm.
+
+先退出旧版，完整解压，运行 AstralRhythm.exe。
+语言：右键 → 语言 / Language。
+旧版自定义表格复制到本包“表格”目录即可。
+设置目录沿用 %APPDATA%\Astral，保留原设置。
+完整说明见 README.zh-CN.md。

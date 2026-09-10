@@ -1,0 +1,16 @@
+# Local build output; keep resources_windows_amd64.syso tracked.
+*.exe
+*.test
+*.log
+/dist/
+/validation/
+/SHA256.txt
+/self-test.txt
+__pycache__/
+*.pyc
+# Do not commit temporary spreadsheets, user preferences or credentials.
+~$*.xlsx
+settings.json
+settings-*.tmp
+.env
+.env.*

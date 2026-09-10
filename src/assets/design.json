@@ -1,0 +1,179 @@
+{
+  "name": "山岚·凝时",
+  "version": 3,
+  "days": [
+    {
+      "name": "日曜",
+      "title": "日光",
+      "element": "火",
+      "light": "925E3A",
+      "dark": "F1B482",
+      "soft_light": "F4F4F2",
+      "soft_dark": "192126"
+    },
+    {
+      "name": "月曜",
+      "title": "月白",
+      "element": "水",
+      "light": "4A6483",
+      "dark": "ADBFD9",
+      "soft_light": "F2F4F4",
+      "soft_dark": "19212A"
+    },
+    {
+      "name": "火曜",
+      "title": "朱砂",
+      "element": "火",
+      "light": "9E5142",
+      "dark": "EF9A82",
+      "soft_light": "F4F4F2",
+      "soft_dark": "1B2227"
+    },
+    {
+      "name": "水曜",
+      "title": "澄水",
+      "element": "水",
+      "light": "396789",
+      "dark": "96BCD9",
+      "soft_light": "F1F4F4",
+      "soft_dark": "172129"
+    },
+    {
+      "name": "木曜",
+      "title": "青玉",
+      "element": "木",
+      "light": "367359",
+      "dark": "A0D3B8",
+      "soft_light": "F1F5F3",
+      "soft_dark": "182528"
+    },
+    {
+      "name": "金曜",
+      "title": "香槟",
+      "element": "金",
+      "light": "536671",
+      "dark": "D8E1E5",
+      "soft_light": "F2F4F4",
+      "soft_dark": "1C232A"
+    },
+    {
+      "name": "土曜",
+      "title": "岩褐",
+      "element": "土",
+      "light": "81682F",
+      "dark": "D8BD86",
+      "soft_light": "F3F4F2",
+      "soft_dark": "202529"
+    }
+  ],
+  "hours": [
+    {
+      "name": "子时",
+      "title": "夜航",
+      "element": "水",
+      "light": "426080",
+      "dark": "97B3D8",
+      "soft_light": "F2F4F4",
+      "soft_dark": "18242A"
+    },
+    {
+      "name": "丑时",
+      "title": "静夜",
+      "element": "土",
+      "light": "7A673E",
+      "dark": "CEBC90",
+      "soft_light": "F3F4F2",
+      "soft_dark": "19242A"
+    },
+    {
+      "name": "寅时",
+      "title": "将明",
+      "element": "木",
+      "light": "38715A",
+      "dark": "95C7AD",
+      "soft_light": "F1F5F3",
+      "soft_dark": "18252A"
+    },
+    {
+      "name": "卯时",
+      "title": "晨曦",
+      "element": "木",
+      "light": "3B745B",
+      "dark": "A2D4B7",
+      "soft_light": "F1F5F3",
+      "soft_dark": "18252A"
+    },
+    {
+      "name": "辰时",
+      "title": "朝光",
+      "element": "土",
+      "light": "7D6834",
+      "dark": "D9C58F",
+      "soft_light": "F3F4F2",
+      "soft_dark": "19252A"
+    },
+    {
+      "name": "巳时",
+      "title": "澄明",
+      "element": "火",
+      "light": "9B5147",
+      "dark": "ECA08E",
+      "soft_light": "F4F4F3",
+      "soft_dark": "19252B"
+    },
+    {
+      "name": "午时",
+      "title": "日中",
+      "element": "火",
+      "light": "9D5743",
+      "dark": "F1AB8A",
+      "soft_light": "F4F4F2",
+      "soft_dark": "1A252A"
+    },
+    {
+      "name": "未时",
+      "title": "午后",
+      "element": "土",
+      "light": "7E6935",
+      "dark": "DDC68E",
+      "soft_light": "F3F4F2",
+      "soft_dark": "18252B"
+    },
+    {
+      "name": "申时",
+      "title": "斜阳",
+      "element": "金",
+      "light": "566975",
+      "dark": "CCD9E1",
+      "soft_light": "F2F4F4",
+      "soft_dark": "1A252B"
+    },
+    {
+      "name": "酉时",
+      "title": "落霞",
+      "element": "金",
+      "light": "566973",
+      "dark": "DEE4E6",
+      "soft_light": "F2F4F4",
+      "soft_dark": "19252B"
+    },
+    {
+      "name": "戌时",
+      "title": "灯晚",
+      "element": "土",
+      "light": "826638",
+      "dark": "D0B381",
+      "soft_light": "F3F4F2",
+      "soft_dark": "19242A"
+    },
+    {
+      "name": "亥时",
+      "title": "入梦",
+      "element": "水",
+      "light": "456783",
+      "dark": "A0BFDA",
+      "soft_light": "F2F4F4",
+      "soft_dark": "18252B"
+    }
+  ]
+}
