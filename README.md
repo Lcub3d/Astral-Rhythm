@@ -8,7 +8,9 @@ A compact, offline Windows taskbar companion: weekly direction from the seven da
 
 ## Start
 
-Download the **Windows x64 ZIP** from [Releases](https://github.com/Lcub3d/Astral-Rhythm/releases). Extract the entire folder, close the previous version, and run **`AstralRhythm.exe`**. The supplied executable needs no separately installed Go, Python, .NET or WebView runtime. **Code → Download ZIP** is source code, not the runnable app.
+Open [Windows builds](https://github.com/Lcub3d/Astral-Rhythm/actions/workflows/windows.yml), select a successful run, and download **Astral-Rhythm-Windows-x64-and-source** under **Artifacts**. GitHub requires sign-in for Actions artifact downloads. Unpack the **Windows x64 ZIP** inside. Published versions, when available, can also be downloaded from [Releases](https://github.com/Lcub3d/Astral-Rhythm/releases).
+
+Extract the entire folder, close the previous version, and run **`AstralRhythm.exe`**. The executable needs no separately installed Go, Python, .NET or WebView runtime. **Code → Download ZIP** is source code, not the runnable app.
 
 The transparent taskbar companion shows the **day star above** and **shichen below**. Hover to open the card; click to pin or close; drag to reposition; right-click for settings.
 
@@ -51,7 +53,7 @@ GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-H=windowsg
 
 On Windows, run `src/build.cmd`. Regenerate icon/version/DPI resources with `python tools/build_resources.py`. Artwork is checked in; rebuilding it with `tools/build_assets.py` additionally needs Pillow and CairoSVG. These are development tools, not runtime requirements. No fonts are bundled; the app uses Windows system fonts.
 
-`python tools/package.py` creates portable and source ZIPs plus SHA-256 checksums under `dist/`. [GitHub Actions](https://github.com/Lcub3d/Astral-Rhythm/actions) runs Linux tests/vet, native Windows tests and a Windows x64 build. Passing runs provide downloadable artifacts. Tagged releases publish the portable app and source. Pull requests never receive release-write permissions.
+`python tools/package.py` creates portable and source ZIPs plus SHA-256 checksums under `dist/`. [GitHub Actions](https://github.com/Lcub3d/Astral-Rhythm/actions) runs Linux tests/vet, native Windows tests and a Windows x64 build. Passing runs provide downloadable artifacts. Pushing a version tag matching the source version runs the tested release workflow; publication requires the corresponding repository permissions. Pull requests never receive release-write permissions.
 
 ## Scope
 
