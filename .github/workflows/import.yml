@@ -1,0 +1,116 @@
+name: Publish initial Astral Rhythm source
+
+on:
+  push:
+    branches: [main]
+    paths: ['.import/**', '.github/workflows/import.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  import:
+    if: github.repository == 'Lcub3d/Astral-Rhythm' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    outputs:
+      revision: ${{ steps.commit.outputs.revision }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Verify and expand the reviewed source
+        shell: python
+        run: |
+          from pathlib import Path, PurePosixPath
+          from zipfile import ZipFile, ZIP_DEFLATED
+          import base64, hashlib, io, lzma, shutil, tarfile
+          parts = sorted(Path('.import').glob('part-*.b64'))
+          if len(parts) != 11:
+              raise SystemExit('Expected exactly 11 source archive parts')
+          packed = base64.b64decode(''.join(p.read_text(encoding='ascii').strip() for p in parts), validate=True)
+          if len(packed) != 62176 or hashlib.sha256(packed).hexdigest() != '230b7a62cd7dd430df5ca006810789c3fcc4b9b15af9f91e647ef2bd2518df55':
+              raise SystemExit('Source archive checksum mismatch')
+          archive = lzma.decompress(packed, memlimit=256 * 1024 * 1024)
+          if len(archive) != 368640:
+              raise SystemExit('Unexpected archive size')
+          with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+              members = tar.getmembers()
+              if len(members) != 85:
+                  raise SystemExit('Unexpected source file count')
+              for entry in members:
+                  p = PurePosixPath(entry.name)
+                  if not entry.isfile() or p.is_absolute() or '..' in p.parts or p.parts[0] in {'.git', '.github', '.import'}:
+                      raise SystemExit('Unsafe archive path')
+              # Original XLSX ZIP directory markers are zero-byte regular tar members.
+              files = [m for m in members if not m.name.endswith('/')]
+              tar.extractall('.', members=files, filter='data')
+          Path('表格').mkdir(exist_ok=True)
+          for folder in sorted(Path('.workbooks').iterdir()):
+              name = (folder / 'name.txt').read_text(encoding='utf-8').strip()
+              if PurePosixPath(name).name != name or '\\' in name or not name.endswith('.xlsx'):
+                  raise SystemExit('Unsafe workbook name')
+              source = folder / 'parts'
+              with ZipFile(Path('表格') / name, 'w', ZIP_DEFLATED, compresslevel=9) as out:
+                  for p in sorted(source.rglob('*')):
+                      if p.is_file():
+                          out.writestr(p.relative_to(source).as_posix(), p.read_bytes())
+          shutil.rmtree('.workbooks')
+          shutil.rmtree('.import')
+      - name: Install artwork development tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y libcairo2
+          python -m pip install 'Pillow==12.3.0' 'CairoSVG==2.8.2'
+      - name: Rebuild original artwork and Windows resources
+        run: |
+          python tools/build_assets.py
+          python tools/build_resources.py
+      - name: Commit expanded source and artwork
+        id: commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if ! git diff --cached --quiet -- .github; then
+            echo 'Import must not modify workflow files'
+            exit 1
+          fi
+          git commit -m 'feat: import Astral Rhythm 3.1.1 source, guidance and artwork'
+          git push origin HEAD:main
+          echo "revision=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  verify:
+    needs: import
+    permissions:
+      contents: read
+    uses: ./.github/workflows/windows.yml
+    with:
+      revision: ${{ needs.import.outputs.revision }}
+
+  release:
+    needs: [import, verify]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.import.outputs.revision }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: Astral-Rhythm-Windows-x64-and-source
+          path: dist
+      - name: Publish first Windows prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ needs.import.outputs.revision }}
+        run: |
+          gh release create v3.1.1 dist/* --target "$SOURCE_SHA" --title 'Astral Rhythm v3.1.1' --notes-file RELEASE_NOTES.md --prerelease
