@@ -9,12 +9,12 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 TOP_FILES = (
-    "AstralRhythm.ico", "README.md", "README.zh-CN.md", "CHANGELOG.md", "RELEASE_NOTES.md",
+    "AstralRhythm.ico", "README.md", "README.en.md", "README.zh-CN.md", "CHANGELOG.md", "RELEASE_NOTES.md",
     "BUILD_SOURCES.md", "AGENTS.md", "先读我.txt", "使用说明.md", "data.json",
-    ".gitignore", ".gitattributes", "Start-English.cmd", "Start-Chinese.cmd", "Start-System.cmd",
+    ".gitignore", ".gitattributes", "release.json", "Start-English.cmd", "Start-Chinese.cmd", "Start-System.cmd",
     "Preview.cmd", "Reset-Position.cmd", "Self-Test.cmd", "打开悬浮卡.cmd", "恢复默认位置.cmd", "自检.cmd",
 )
-DIRECTORIES = ("src", "tools", ".agents", ".github", "locales", "表格")
+DIRECTORIES = ("src", "tools", ".agents", ".github", "locales", "表格", "docs")
 ALLOWED = {".go", ".mod", ".sum", ".json", ".md", ".txt", ".cmd", ".py", ".png", ".svg", ".syso", ".yml", ".yaml", ".xlsx", ".ico"}
 
 

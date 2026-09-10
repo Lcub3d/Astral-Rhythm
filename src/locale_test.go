@@ -20,13 +20,16 @@ func hasHan(s string) bool {
 	return false
 }
 func TestAstralBrandNames(t *testing.T) {
-	if appID != "Astral" || appNameZH != "七曜工作法" || appNameEN != "Astral Rhythm" || appVersion != "3.1.1" {
+	if appID != "Astral" || appNameZH != "七曜工作法" || appNameEN != "Astral Rhythm" || appVersion != "1.0.0" {
 		t.Fatal("incorrect product identity")
 	}
 	for _, lang := range []string{"zh-CN", "en"} {
 		l := NewLocalizer(lang)
 		if !isCurrentWindowTitle(l.Title()) {
 			t.Fatal("current window is not recognized")
+		}
+		if !strings.Contains(strings.SplitN(l.CurrentText(DefaultData(), time.Now()), "\r\n", 2)[0], appVersion) {
+			t.Fatal("export header does not use the public version")
 		}
 		if !strings.HasSuffix(l.Title(), "V"+appVersion) {
 			t.Fatal("incorrect title version")

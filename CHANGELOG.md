@@ -1,24 +1,18 @@
-# Changelog
+# Changelog · 更新记录
 
-## 3.1.1 — Astral Rhythm
+## 1.0.0 — Work in rhythm.
 
-- Adopted the final English name **Astral Rhythm** and tagline **Work in rhythm.**
-- Renamed the Windows executable to `AstralRhythm.exe` and updated launchers, resources, packaging and bilingual documentation.
-- Kept the stable `Astral` settings identity, source guidance and V3 interface unchanged.
-- Added repository import, native Windows CI and release packaging.
+First public release of **Astral Rhythm / 七曜工作法**.
 
+- Transparent two-line Windows taskbar companion: day star above, shichen below.
+- Independent mountain-and-mist cards with seven day-star and twelve shichen identities.
+- Individual five-element text accents; light and dark themes.
+- English, Simplified Chinese and system-language selection.
+- Editable Excel guidance and exact-source English translations, entirely offline.
+- Illustrated bilingual README with checked classical references and clear image provenance.
+- Native Windows builds, regression tests and reproducible offscreen UI exports.
+- Portable Windows x64 and complete source packages, with SHA-256 checksums.
 
-## 3.1.0 — Astral / 七曜工作法
+**公开发行从 v1.0.0 开始。** 此前 3.x 等编号仅用于开发试用，不作为正式发布序列。保留提交历史与设置迁移格式，兼容已有用户偏好；这不是功能回退。
 
-- Renamed the product to 七曜工作法 in Chinese and Astral in English; executable: Astral.exe.
-- Changed the upper card heading to 曜星 / Day Star.
-- Added System / Simplified Chinese / English language selection with immediate updates and persistence.
-- Translated all bundled day-star and shichen guidance; local JSON overrides match exact source text.
-- Added English word wrapping, English-sized labels and stable taskbar width across day-star names.
-- Retained V3 artwork, compact two-card layout, independent sections and transparent taskbar companion.
-- Migrated existing V1–V3 preferences without deleting the original settings or workbooks.
-- Added bilingual regression tests, renamed Windows resources and GitHub-ready build/package configuration.
-
-## 3.0.0
-
-The supplied V3 baseline: independent compact cards and native transparent taskbar text.
+Public numbering starts at v1.0.0. Earlier identifiers were development builds, not public releases. Commit history and settings migration schemas are preserved; the reset does not remove features.

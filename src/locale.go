@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-const appVersion = "3.1.1"
+const appVersion = "1.0.0"
 const appID = "Astral"
 const appNameZH = "七曜工作法"
 const appNameEN = "Astral Rhythm"
@@ -116,7 +116,9 @@ func (l Localizer) Hour(h Hour) Hour {
 }
 func (l Localizer) CurrentText(data Data, now time.Time) string {
 	if !l.English() {
-		return CurrentText(data, now)
+		text := CurrentText(data, now)
+		_, body, _ := strings.Cut(text, "\r\n")
+		return fmt.Sprintf("%s  %s\r\n%s", l.Title(), now.Format("2006-01-02 15:04"), body)
 	}
 	raw := data.HourAt(now)
 	day, h := l.Day(data.DayAt(now)), l.Hour(raw)

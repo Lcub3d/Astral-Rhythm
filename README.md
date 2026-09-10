@@ -1,62 +1,147 @@
+<div align="center">
+
+<img src="docs/images/hero.png" alt="Astral Rhythm：七曜工作法，原生 Windows 双卡与透明任务栏控件" width="100%" />
+
 # Astral Rhythm · 七曜工作法
 
-**Work in rhythm.**
+**一周有章法，一日有节律。**  
+Work in rhythm.
 
-A compact, offline Windows taskbar companion: weekly direction from the seven day stars, and guidance for the current traditional two-hour period (*shichen*).
+[![Release](https://img.shields.io/github/v/release/Lcub3d/Astral-Rhythm?color=86b8aa&style=flat-square)](https://github.com/Lcub3d/Astral-Rhythm/releases/latest)
+[![Build](https://github.com/Lcub3d/Astral-Rhythm/actions/workflows/windows.yml/badge.svg)](https://github.com/Lcub3d/Astral-Rhythm/actions/workflows/windows.yml)
+![Platform](https://img.shields.io/badge/Windows-x64-7598b5?style=flat-square)
+![Language](https://img.shields.io/badge/语言-中文%20%7C%20English-b8a37d?style=flat-square)
 
-**English · [简体中文](README.zh-CN.md)**
+**简体中文** · [English](README.en.md)
 
-## Start
+**[下载 Windows 版](https://github.com/Lcub3d/Astral-Rhythm/releases/latest)** · [看看界面](#一眼看见当下) · [传统与灵感](#古人的时间感今天的工作法) · [自定义建议](#让它适合你的工作)
 
-Open [Windows builds](https://github.com/Lcub3d/Astral-Rhythm/actions/workflows/windows.yml), select a successful run, and download **Astral-Rhythm-Windows-x64-and-source** under **Artifacts**. GitHub requires sign-in for Actions artifact downloads. Unpack the **Windows x64 ZIP** inside. Published versions, when available, can also be downloaded from [Releases](https://github.com/Lcub3d/Astral-Rhythm/releases).
+</div>
 
-Extract the entire folder, close the previous version, and run **`AstralRhythm.exe`**. The executable needs no separately installed Go, Python, .NET or WebView runtime. **Code → Download ZIP** is source code, not the runnable app.
+---
 
-The transparent taskbar companion shows the **day star above** and **shichen below**. Hover to open the card; click to pin or close; drag to reposition; right-click for settings.
+有些工具提醒你：还剩多少任务。  
+**Astral Rhythm 想提醒你：此刻，什么更值得做。**
 
-## A quiet interface
+它安静地待在 Windows 任务栏旁，用**七曜**给一周一个方向，用**十二时辰**给当下一个提示。把规划、攻坚、思考、协作、整理与休息，放回各有轻重的节奏里。
 
-Two compact, independent cards separate weekly direction from the current time period. Day-star artwork changes with the weekday; shichen keeps its own mountain-and-mist artwork. Dark and light themes are included.
+不是把每一分钟填满，而是让每一段时间各得其所。
 
-The taskbar button has **no visible background plate or border**. Its two text colors independently follow their five-element families. Long guidance wraps and scrolls. There is no persistent footer or toolbar.
+## 一眼看见当下
 
-## 中文 / English
+<table>
+<tr><th>深色 · 简体中文</th><th>浅色 · English</th></tr>
+<tr>
+<td align="center" valign="top"><img src="docs/images/card-zh-CN-dark.png" alt="中文深色悬浮卡：曜星在上，时辰在下" width="320" /></td>
+<td align="center" valign="top"><img src="docs/images/card-en-light.png" alt="English light theme: Day Star and Shichen" width="320" /></td>
+</tr>
+</table>
 
-Right-click → **Language → System / 简体中文 / English**. The change applies immediately and is saved. Chinese Windows interface languages select Simplified Chinese; other system languages select English.
+**任务栏只留两行图标和文字。** 没有可见底板，没有常驻大面板；需要时，悬停展开山岚双卡。上卡讲今天，下卡讲此刻。曜星与时辰各有图标、底纹与五行色，不把两套解释混在一起。
 
-`Start-English.cmd`, `Start-Chinese.cmd` and `Start-System.cmd` select a language directly. Menus, guidance cards, bundled advice, traditional explanations and copied text are bilingual. The upper heading is **Day Star / 曜星**.
+上图由 **Windows 上的程序原生绘制代码**导出，使用固定示例时间与实际字体度量；首页封面将这些界面图与品牌背景合成。它们不是 AI 概念图，也不冒充桌面交互录像。可复现过程见 [图像说明](docs/VISUALS.md)。
 
-## Make it yours
+| 轻一点 | 清楚一点 | 自由一点 |
+| :--- | :--- | :--- |
+| 原生 Go + Win32，解压即用 | 曜星在上，时辰在下 | 中文、English、跟随系统 |
+| 离线运行，无须账号 | 深浅主题，独立分区 | Excel 编辑自己的工作建议 |
+| 悬停查看，不抢主工作区 | 木青、火赤、土黄、金白、水蓝 | 拖动定位，字号可调 |
 
-Edit either guidance workbook in **`表格/`**. Saved changes are reloaded in about five seconds. Keep filenames, headers and weekday/shichen identifiers. Invalid changes do not replace the last valid data. Public copies remove local-path and author metadata only; worksheet content and formatting are preserved.
+## 古人的时间感，今天的工作法
 
-Translations live in **`locales/en.json`**, keyed by exact Chinese source text. There is no translation service or network request. New text without a matching translation remains in its original language; add its translation to the local dictionary. Changing languages never rewrites the workbooks.
+### 观时：先看节律，再安排事情
 
-Data priority: workbooks → `data.json` when both workbooks are absent → embedded data.
+> **观乎天文，以察时变。**  
+> ——《周易·贲·彖传》[¹](https://zh.wikisource.org/wiki/周易/賁)
 
-## Upgrade and settings
+我们从这句话借来一种看待时间的方式：时间不仅是流逝的数字，也可以是观察变化、调整行动的线索。软件将这一意象化为一个小小的提醒：先抬头看看今天，再决定眼下把注意力放在哪里。
 
-The product name is **Astral Rhythm**. The settings directory remains **`%APPDATA%\Astral`** for compatibility with V3.1.0. Older 七曜时辰 preferences can be migrated when no Astral settings exist. Old settings are not deleted. Copy your customized `表格` folder into the new portable package when upgrading.
+### 周而复始：让一周有自己的秩序
 
-`Preview.cmd` opens the card. `Reset-Position.cmd` restores placement. `Self-Test.cmd` writes `self-test.txt`.
+> **一日一易，七日周而复始。**  
+> ——《宿曜经》卷下·七曜直日历品第八[²](https://tripitaka.cbeta.org/T21n1299_002)
 
-## Build
+《宿曜经》在这一段记述了日月五星的七日轮转，并列出不同地域的称呼。这是软件“七曜”意象的一处历史出处。**“启、攻、智、扩、合、整、养”是本项目的现代工作编排，不是典籍原文。**
 
-Go + Win32, no third-party Go dependencies, no CGO. Use Go 1.23 or newer, preferably a supported release for distribution.
+| 星期 | 七曜 | 一字节奏 | 内置的现代工作方向 |
+| :--- | :--- | :---: | :--- |
+| 周一 | 月曜 · 太阴 | **启** | 规划、整理、启动、梳理资料 |
+| 周二 | 火曜 · 荧惑 | **攻** | 最难任务、执行、攻坚、运动 |
+| 周三 | 水曜 · 辰星 | **智** | 写作、论文、学习、研究、沟通 |
+| 周四 | 木曜 · 岁星 | **扩** | 战略、合作、重要决策、资源协调 |
+| 周五 | 金曜 · 太白 | **合** | 汇报、展示、关系维护、创意、总结 |
+| 周六 | 土曜 · 镇星 | **整** | 家务、整理、维修、长期事务 |
+| 周日 | 日曜 · 太阳 | **养** | 休息、户外、家庭、复盘、轻规划 |
 
-```sh
+### 待时而动：把力气用在合适的地方
+
+> **君子藏器于身，待时而动。**  
+> ——《周易·系辞下》[³](https://zh.wikisource.org/wiki/周易/繫辭下)
+
+对这款工具而言，“待时”不是等待好运，而是提醒自己在推进之外留出准备、整理与恢复的空间。时辰卡以子、丑、寅、卯等十二地支标记两小时一段的日常时间，帮助你从“今天要做什么”落到“现在先做什么”。
+
+**传统提供意象，安排由你决定。** 典籍引文用于说明文化灵感，不是效率或健康效果的证明；内置建议来自项目表格，可根据真实作息、职责和截止日期修改。典籍、传统象征与现代建议的边界见 [出处与设计解读](docs/TRADITION.md)。
+
+## 每一曜、每一时，都有自己的样子
+
+<img src="docs/images/identities.png" alt="七枚曜星图标、十二枚时辰图标及时间范围" width="100%" />
+
+七曜采用星象线稿，时辰采用地支生肖线稿；配色克制，文字清楚。**上卡随曜日切换，下卡随时辰切换。** 任务栏两行文字分别按自身五行着色；日曜用火色、月曜用水色是本项目的界面约定。
+
+## 开始使用
+
+从 [Releases](https://github.com/Lcub3d/Astral-Rhythm/releases/latest) 下载 **`Astral-Rhythm_v1.0.0_Windows_x64.zip`**。先退出旧程序，完整解压，再双击 **`AstralRhythm.exe`**。成品不需要安装 Go、Python、.NET 或 WebView。
+
+| 操作 | 结果 |
+| :--- | :--- |
+| 鼠标悬停 | 展开当前曜星与时辰卡片 |
+| 单击控件 | 固定或收起卡片 |
+| 按住左键拖动 | 调整任务栏位置，并记住位置 |
+| 右键 | 语言、主题、字号、开机启动等设置 |
+| `Start-English.cmd` / `Start-Chinese.cmd` | 直接以指定语言启动 |
+| `Reset-Position.cmd` / `恢复默认位置.cmd` | 控件找不到时恢复位置 |
+
+开机启动默认关闭。软件是贴附任务栏的独立小窗，不会替 Windows 系统托盘自动腾出空间；首次运行可拖到空位。`Code → Download ZIP` 是源码，不是成品程序。
+
+## 让它适合你的工作
+
+建议保存在 **`表格`** 文件夹的两份 Excel 中，保存后约 5 秒重新读取。请保留文件名、表头及星期／时辰标识。原表空白的工作等级不会擅自补填；无效修改不会覆盖上一次有效数据。
+
+英文翻译在 **`locales/en.json`**，按中文原文精确匹配。新增内容尚无译文时显示原文，不会套用已经不相符的旧翻译。软件不联网翻译，也不修改你的原始表格。
+
+升级时，将自己改过的“表格”文件夹复制到新版；设置继续保存在 **`%APPDATA%\Astral`**，保留早期试用版本的位置和界面偏好。
+
+<details>
+<summary><strong>构建、验证与项目结构</strong></summary>
+
+源码位于 `src/`，Go 1.23 或更新版本，无第三方 Go 依赖。
+
+```powershell
 cd src
 go test -v ./...
-go vet ./...
-GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-H=windowsgui -s -w" -o ../AstralRhythm.exe .
+$env:GOOS = 'windows'
+$env:GOARCH = 'amd64'
+$env:CGO_ENABLED = '0'
+go build -trimpath -ldflags="-H=windowsgui -s -w" -o ../AstralRhythm.exe .
 ```
 
-On Windows, run `src/build.cmd`. Regenerate icon/version/DPI resources with `python tools/build_resources.py`. Artwork is checked in; rebuilding it with `tools/build_assets.py` additionally needs Pillow and CairoSVG. These are development tools, not runtime requirements. No fonts are bundled; the app uses Windows system fonts.
+修改版本后，先在仓库根目录运行 `python tools/build_resources.py`，更新 Windows 图标、版本与 DPI 资源。原生界面图由 Windows CI 的 `TestNativeDocumentationRenders` 导出，随后 `tools/build_docs.py` 合成文档图片。字体取自构建机系统，不随软件分发。
 
-`python tools/package.py` creates portable and source ZIPs plus SHA-256 checksums under `dist/`. [GitHub Actions](https://github.com/Lcub3d/Astral-Rhythm/actions) runs Linux tests/vet, native Windows tests and a Windows x64 build. Passing runs provide downloadable artifacts. Pushing a version tag matching the source version runs the tested release workflow; publication requires the corresponding repository permissions. Pull requests never receive release-write permissions.
+CI 包含数据一致性、时辰边界、语言、分区、透明像素与布局测试，并在 Windows 环境编译。估算布局检查不等同桌面测试；原生界面导出也不证明所有 Windows 任务栏配置的交互兼容性。
 
-## Scope
+`src/` 程序与测试 · `tools/` 构建与打包 · `docs/` 图像与典籍出处 · `locales/` 翻译 · `表格/` 可编辑建议。
 
-The widget is a separate native window attached to the **primary taskbar**; it does not reserve tray space or move other icons. Time follows Windows local civil time. Day stars change at midnight; Zi spans 23:00–01:00.
+公开版本从 **v1.0.0** 开始。此前编号只用于开发试用；设置中的 `ui_version` 是迁移格式，不是产品发行版本。
 
-Automated layout tests estimate font widths. Passing tests and compilation do not establish visual verification on a real Windows desktop. The EXE is not digitally signed. No open-source license has been selected by the owner.
+</details>
+
+---
+
+<div align="center">
+
+**不必时时用力，但愿事事有节。**  
+Astral Rhythm · Work in rhythm.
+
+[反馈问题](https://github.com/Lcub3d/Astral-Rhythm/issues) · [更新记录](CHANGELOG.md) · [English](README.en.md)
+
+</div>

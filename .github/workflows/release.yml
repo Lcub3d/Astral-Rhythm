@@ -1,48 +1,108 @@
-name: Release tagged Windows build
+name: Publish Astral Rhythm release
 
 on:
   push:
-    tags: ['v*']
+    branches: [main]
+    paths: ['release.json']
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: astral-public-release
+  cancel-in-progress: false
+
 jobs:
   build:
+    if: github.repository == 'Lcub3d/Astral-Rhythm' && github.ref == 'refs/heads/main'
     uses: ./.github/workflows/windows.yml
     permissions:
       contents: read
     with:
       revision: ${{ github.sha }}
 
-  release:
+  publish:
     needs: build
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v7
         with:
-          persist-credentials: false
+          ref: ${{ github.sha }}
+          fetch-depth: 1
       - uses: actions/download-artifact@v8
         with:
           name: Astral-Rhythm-Windows-x64-and-source
           path: dist
-      - name: Check tag matches the source version
-        shell: python
-        env:
-          RELEASE_TAG: ${{ github.ref_name }}
+      - uses: actions/download-artifact@v8
+        with:
+          name: Astral-Rhythm-publish-files
+          path: .
+      - name: Validate the public version and package checksums
+        id: version
+        shell: bash
         run: |
+          python - <<'PY'
           from pathlib import Path
-          import os, re
-          version = re.search(r'const appVersion = "([0-9]+\.[0-9]+\.[0-9]+)"', Path('src/locale.go').read_text(encoding='utf-8'))[1]
-          if os.environ['RELEASE_TAG'] != 'v' + version:
-              raise SystemExit('Tag must match appVersion in src/locale.go')
-      - name: Publish without overwriting existing release assets
+          import json, os, re
+          version = json.loads(Path('release.json').read_text(encoding='utf-8'))['version']
+          if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version):
+              raise SystemExit('Invalid semantic release version')
+          source = re.search(r'const appVersion = "([0-9]+\.[0-9]+\.[0-9]+)"', Path('src/locale.go').read_text(encoding='utf-8'))[1]
+          if version != source:
+              raise SystemExit('Manifest and application versions differ')
+          for suffix in ('Windows_x64', 'Source'):
+              if not Path(f'dist/Astral-Rhythm_v{version}_{suffix}.zip').is_file():
+                  raise SystemExit('Missing required release package')
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
+              out.write(f'tag=v{version}\n')
+          PY
+          cd dist
+          sha256sum --check Astral-Rhythm_SHA256.txt
+      - name: Publish generated images and matching Windows resources
+        id: docs
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          current=$(git ls-remote origin refs/heads/main | cut -f1)
+          if [ "$current" != "$EXPECTED_SHA" ]; then
+            echo 'main changed after the build; rebuild before releasing'
+            exit 1
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- docs/images src/resources_windows_amd64.syso
+          if git diff --cached --name-only | grep -Ev '^(docs/images/[^/]+\.(png|json)|src/resources_windows_amd64\.syso)$'; then
+            echo 'Unexpected generated file'
+            exit 1
+          fi
+          if ! git diff --cached --quiet; then
+            git commit -m 'docs: publish native interface artwork and release resources'
+            git push origin HEAD:main
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Create public release with downloadable assets
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+          PUBLISHED_SHA: ${{ steps.docs.outputs.sha }}
         run: |
-          gh release create "$RELEASE_TAG" dist/* --verify-tag --title "Astral Rhythm $RELEASE_TAG" --notes-file RELEASE_NOTES.md
+          set -euo pipefail
+          current=$(git ls-remote origin refs/heads/main | cut -f1)
+          if [ "$current" != "$PUBLISHED_SHA" ]; then
+            echo 'main moved before release creation; do not publish a different revision'
+            exit 1
+          fi
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo 'This release already exists; published assets are never overwritten'
+            exit 1
+          fi
+          gh release create "$RELEASE_TAG" dist/* --target "$PUBLISHED_SHA" --title "Astral Rhythm $RELEASE_TAG · 七曜工作法" --notes-file RELEASE_NOTES.md --latest
+          gh release view "$RELEASE_TAG" --json url,tagName,isDraft,isPrerelease,assets

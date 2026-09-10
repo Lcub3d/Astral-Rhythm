@@ -64,6 +64,12 @@ jobs:
           New-Item -ItemType Directory -Force ../validation | Out-Null
           go test -v ./... 2>&1 | Tee-Object ../validation/go-test-windows.log
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Compose illustrated README assets
+        run: |
+          python -m pip install Pillow==12.3.0
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python tools/build_docs.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Build Windows x64
         working-directory: src
         env:
@@ -73,6 +79,13 @@ jobs:
         run: |
           go build -trimpath -ldflags="-H=windowsgui -s -w" -o ../AstralRhythm.exe .
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Check embedded executable version
+        run: |
+          $source = Get-Content src/locale.go -Raw
+          $version = [regex]::Match($source, 'const appVersion = "([0-9]+\.[0-9]+\.[0-9]+)"').Groups[1].Value
+          $actual = (Get-Item AstralRhythm.exe).VersionInfo
+          if ($actual.FileVersion -ne $version -or $actual.ProductVersion -ne $version) { throw 'EXE version does not match source' }
+          Write-Output "Executable FileVersion=$($actual.FileVersion), ProductVersion=$($actual.ProductVersion)"
       - name: Package app, source, workbooks and translations
         run: python tools/package.py
       - uses: actions/upload-artifact@v7
@@ -85,5 +98,13 @@ jobs:
         with:
           name: Astral-Rhythm-native-docs
           path: docs/images/*
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Astral-Rhythm-publish-files
+          path: |
+            docs/images/*
+            src/resources_windows_amd64.syso
           if-no-files-found: error
           retention-days: 30
