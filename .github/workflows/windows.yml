@@ -1,0 +1,85 @@
+name: Windows build and tests
+
+on:
+  push:
+    branches: [main]
+    paths: ['src/**', 'tools/**', 'data.json', 'locales/**', '表格/**']
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      revision:
+        type: string
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  logic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.revision || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-go@v7
+        with:
+          go-version: stable
+          cache: false
+      - name: Cross-platform tests and vet
+        working-directory: src
+        run: |
+          go test -v ./...
+          go vet ./...
+
+  windows:
+    runs-on: windows-latest
+    needs: logic
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.revision || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-go@v7
+        with:
+          go-version: stable
+          architecture: x64
+          cache: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Regenerate Windows icon, version and DPI resources
+        run: python tools/build_resources.py
+      - name: Native Windows unit tests
+        working-directory: src
+        run: |
+          New-Item -ItemType Directory -Force ../validation | Out-Null
+          go test -v ./... 2>&1 | Tee-Object ../validation/go-test-windows.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Build Windows x64
+        working-directory: src
+        env:
+          GOOS: windows
+          GOARCH: amd64
+          CGO_ENABLED: '0'
+        run: |
+          go build -trimpath -ldflags="-H=windowsgui -s -w" -o ../AstralRhythm.exe .
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Package app, source, workbooks and translations
+        run: python tools/package.py
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Astral-Rhythm-Windows-x64-and-source
+          path: |
+            dist/Astral-Rhythm_v*_Windows_x64.zip
+            dist/Astral-Rhythm_v*_Source.zip
+            dist/Astral-Rhythm_SHA256.txt
+          if-no-files-found: error
+          retention-days: 30
