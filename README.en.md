@@ -46,6 +46,18 @@ These images are exported by the **application's native Windows renderer**, with
 | Offline, no account required | Light and dark themes | Edit guidance in Excel |
 | A hover away from your work | Five-element text accents | Drag to position; adjust font size |
 
+## Look ahead only when you choose
+
+**New in v1.1:** two independent, initially collapsed drawers — **Next 3 days** and **Next 4 shichen**. They remain inside the existing cards; reopening the popup always returns to the present.
+
+<img src="docs/images/preview-en-dark.png" alt="Native Windows rendering of independent future-day and shichen drawers" width="380" />
+
+Names, five-element colors, dates/times and short work labels make the next steps scannable. The nearest item has a subtle accent line, and periods crossing midnight are marked explicitly. Click a row for its complete source guidance; click again to collapse it. Browsing never changes the current card identities or taskbar labels.
+
+An opened drawer stays readable when the pointer leaves. Click the taskbar companion to close the popup; all preview expansion resets on the next visit. Long content scrolls. Existing detail preferences remain separate.
+
+Labels summarize the supplied guidance: **Wu means lunch and rest**, and **Yin means continuing sleep**, not starting work. Priorities appear only where supplied. Edited workbook cells never inherit stale summaries; a current-text excerpt replaces the default label. See [preview behavior and data rules](docs/PREVIEW.md).
+
 ## Old ideas, a modern working rhythm
 
 > **观乎天文，以察时变。**  

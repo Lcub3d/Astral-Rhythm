@@ -17,6 +17,8 @@ type VisualIcon struct {
 	Path string
 }
 type CardOptions struct {
+	Preview                        PreviewState
+	UpcomingDays, UpcomingHours    []PreviewItem
 	Locale                         Localizer
 	DPI, MaxWidth, MaxHeight       int
 	Light, DayDetails, HourDetails bool
@@ -158,6 +160,7 @@ func CompactLayout(day Day, hour Hour, opt CardOptions, measure MeasureText) Car
 		y = row(l.Text("宿曜", "Sutra"), day.Sutra, y, dc)
 		y = row(l.Text("西方", "Western"), day.West, y, dc)
 	}
+	y = appendPreviewDrawer(&out, "day", opt.UpcomingDays, opt, x, y, tw, measure)
 	y += s(10)
 	out.Panels[dpi0].Rect = R(x0, dy, cw, y-dy)
 	y += s(10)
@@ -191,6 +194,7 @@ func CompactLayout(day Day, hour Hour, opt CardOptions, measure MeasureText) Car
 	if hour.Priority != "" {
 		y = row(l.Text("等级", "Priority"), strings.ReplaceAll(strings.ToUpper(hour.Priority), "、", " · "), y, hc)
 	}
+	y = appendPreviewDrawer(&out, "hour", opt.UpcomingHours, opt, x, y, tw, measure)
 	y += s(10)
 	out.Panels[hpi].Rect = R(x0, hy, cw, y-hy)
 	y += s(10)

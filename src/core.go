@@ -151,7 +151,7 @@ func Countdown(t time.Time) string {
 func CurrentText(d Data, now time.Time) string {
 	day, h := d.DayAt(now), d.HourAt(now)
 	var b strings.Builder
-	fmt.Fprintf(&b, "七曜工作法 V3.1  %s\r\n\r\n【今日 · 曜日】\r\n%s  %s  [%s]\r\n今日方向：%s\r\n", now.Format("2006-01-02 15:04"), day.WeekLabel, day.Name, day.Role, day.Advice)
+	fmt.Fprintf(&b, "七曜工作法 V%s  %s\r\n\r\n【今日 · 曜日】\r\n%s  %s  [%s]\r\n今日方向：%s\r\n", appVersion, now.Format("2006-01-02 15:04"), day.WeekLabel, day.Name, day.Role, day.Advice)
 	for _, e := range DayExplanations(day) {
 		fmt.Fprintf(&b, "%s：%s\r\n", e.Label, e.Value)
 	}

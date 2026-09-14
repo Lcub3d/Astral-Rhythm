@@ -17,6 +17,9 @@ const widgetClass = "QiyaoShichen.Widget.v1"
 const cardClass = "QiyaoShichen.Card.v1"
 
 type App struct {
+	Preview                                      PreviewState
+	PreviewInput                                 previewInput
+	PreviewClock                                 string
 	L                                            Localizer
 	HWND, Popup, Taskbar, Icon                   uintptr
 	Exe, Base, Source                            string
@@ -195,6 +198,7 @@ func (a *App) showCard(pin bool) {
 	}
 	a.Pinned = pin
 	if !a.CardShown {
+		a.Preview.Reset()
 		a.Scroll = 0
 	}
 	a.CardShown = true
@@ -203,6 +207,7 @@ func (a *App) showCard(pin bool) {
 	invalidate(a.HWND)
 }
 func (a *App) hideCard() {
+	a.Preview.Reset()
 	if a.CardShown {
 		showWindow.Call(a.Popup, SW_HIDE)
 	}
@@ -376,6 +381,7 @@ func (a *App) tick() {
 	if a.Closing || a.MenuOpen {
 		return
 	}
+	a.pollPreviewDismissal()
 	a.TickCount++
 	a.positionWidget()
 	now := wallClockNow()
@@ -435,7 +441,7 @@ func (a *App) tick() {
 	}
 	if onWidget || onCard {
 		a.LeaveSince = time.Time{}
-	} else if a.CardShown && !a.Pinned {
+	} else if a.CardShown && !a.Pinned && !a.Preview.Active() {
 		if a.LeaveSince.IsZero() {
 			a.LeaveSince = t
 		}
@@ -498,6 +504,11 @@ func (a *App) copyCurrent() {
 func (a *App) cardClick(p Point) {
 	for _, b := range a.Buttons {
 		if a.buttonRect(b).Contains(p) && (!b.InBody || a.Body.Contains(p)) {
+			if a.Preview.Toggle(b.ID) {
+				a.LeaveSince = time.Time{}
+				a.positionCard()
+				return
+			}
 			switch b.ID {
 			case 1:
 				a.Pinned = !a.Pinned
@@ -737,7 +748,7 @@ func widgetProc(h uintptr, msg uint32, wp, lp uintptr) (ret uintptr) {
 			releaseCapture.Call()
 			if dragged {
 				a.save()
-			} else if a.CardShown && a.Pinned {
+			} else if a.CardShown && (a.Pinned || a.Preview.Active()) {
 				a.hideCard()
 				a.HoverSince = time.Now().Add(24 * time.Hour)
 			} else {
@@ -833,6 +844,10 @@ func cardProc(h uintptr, msg uint32, wp, lp uintptr) (ret uintptr) {
 		return r
 	}
 	switch msg {
+	case 0x20: // WM_SETCURSOR
+		if a.previewControlCursor() {
+			return 1
+		}
 	case WM_RENDER:
 		a.render(h, true)
 		return 0
@@ -850,7 +865,7 @@ func cardProc(h uintptr, msg uint32, wp, lp uintptr) (ret uintptr) {
 		p := Point{int32(int16(lp & 0xffff)), int32(int16((lp >> 16) & 0xffff))}
 		hovered := 0
 		for _, b := range a.Buttons {
-			if a.buttonRect(b).Contains(p) {
+			if a.Body.Contains(p) && a.buttonRect(b).Contains(p) {
 				hovered = b.ID
 				break
 			}

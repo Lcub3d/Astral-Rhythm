@@ -1,35 +1,35 @@
-# Astral Rhythm v1.0.0 · 七曜工作法
+# Astral Rhythm v1.1.0 · 只在需要时，看见下一步
 
-**Work in rhythm. · 一周有章法，一日有节律。**
+**Work in rhythm. · 当下专注，未来可见。**
 
-首个公开版本。用七曜给一周一个方向，用十二时辰给当下一个提示。原生 Windows、离线运行、解压即用。
+本版保留原有山岚双卡、透明任务栏和中英双语，新增可折叠的未来预览。
 
 ## 下载 / Download
 
-**普通用户请选择 `Astral-Rhythm_v1.0.0_Windows_x64.zip`**，不是 Source 包。先退出旧程序，完整解压，再运行 **`AstralRhythm.exe`**。无需安装 Go、Python、.NET 或 WebView。
+下载 **`Astral-Rhythm_v1.1.0_Windows_x64.zip`**，退出旧程序、完整解压，运行 **`AstralRhythm.exe`**。无需安装运行环境。
 
-For the ready-to-run application, download **`Astral-Rhythm_v1.0.0_Windows_x64.zip`**. Close an older instance, extract the entire folder and run **`AstralRhythm.exe`**.
+Download the **Windows_x64.zip**, close the previous instance, extract the entire folder and run **AstralRhythm.exe**.
 
-## 本版 / Highlights
+## 新功能 / What's new
 
-- 透明任务栏双行：曜星在上、时辰在下，文字分别按五行着色。
-- 独立山岚双卡、七曜与十二时辰图标、深浅主题。
-- 中文 / English / 跟随系统；右键即时切换。
-- 两份 Excel 自定义建议，本地译文精确匹配；全程离线。
-- 新的图文首页、原生界面图及可核对的传统典籍出处。
+- 曜星卡：**未来 3 日**，名称、日期、五行色与简短工作标签。
+- 时辰卡：**后续 4 个时辰**，名称、准确时段、跨日标识与原表填写的工作等级。
+- 两组独立开关，默认收起；关闭悬浮卡后重置，不打扰下一次查看当下。
+- 点击预览行查看完整原始建议，不替换当前曜星、时辰或任务栏显示。
+- 展开后可安心阅读；点任务栏按钮关闭，长内容滚轮浏览。
+- 标签依据真实原表：午时是午餐休息，寅时是继续睡眠；没有填写的等级不会补造。
+- 修改 Excel 后用当前文本替代旧摘要，中英文同步适配。
 
-Transparent two-line taskbar companion, independent day-star and shichen cards, light/dark themes, bilingual interface, editable local guidance and an illustrated README with sourced cultural context.
+Two independent look-ahead drawers, original identities and element colors, date-aware time ranges, source-based keywords and click-to-expand guidance. Previews reset whenever the popup closes. Current guidance and the transparent taskbar remain unchanged.
 
 ## 升级 / Upgrading
 
-公开版本从 **1.0.0** 开始；早期试用编号不作为正式发布序列。设置目录仍为 `%APPDATA%\Astral`。把自行修改过的“表格”文件夹复制到新版即可，不要覆盖自己的内容。
+设置目录仍为 `%APPDATA%\Astral`。复制自行修改的“表格”文件夹到新版本；请保留自己的文件备份。
 
-Public versioning begins at **1.0.0**. Existing settings remain compatible. Copy your customized workbooks into the new package.
+Existing settings remain compatible. Copy customized workbooks into the new package. No configuration reset is required.
 
-## 验证与文件 / Verification and files
+## 验证 / Verification
 
-Windows CI runs tests, builds the x64 executable and exports bilingual native interface renders. Offscreen UI exports are not full interactive taskbar testing. The EXE is not code-signed.
+Portable tests cover every minute of the day, calendar boundaries, short-label provenance, independent session state and 16,800 preview layouts. Windows CI additionally checks actual GDI font metrics and exports native interface images. These are not full desktop taskbar-interaction tests. The executable is not code-signed.
 
-- `..._Windows_x64.zip`: portable app, guidance, artwork, documentation and source.
-- `..._Source.zip`: complete source and build tools.
-- `Astral-Rhythm_SHA256.txt`: SHA-256 checksums for both ZIP files.
+附带完整源码及 SHA-256 校验文件 / Source and SHA-256 checksums are included.

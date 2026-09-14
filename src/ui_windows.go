@@ -42,6 +42,7 @@ func (a *App) makeLayout() {
 	dc, _, _ := getDC.Call(a.Popup)
 	defer releaseDC.Call(a.Popup, dc)
 	o := CardOptions{Locale: a.L, DPI: a.DPI, MaxWidth: max(a.S(240), a.Monitor.Work.W()-a.S(20)), MaxHeight: max(a.S(160), a.Monitor.Work.H()-a.S(24)), Light: a.isLight(), DayDetails: a.Settings.DayDetails, HourDetails: a.Settings.HourDetails}
+	a.applyPreviewOptions(&o, now)
 	layout := CompactLayout(a.Data.DayAt(now), a.Data.HourAt(now), o, func(s string, size int, bold bool) int { return a.textWidth(dc, s, size, bold) })
 	a.CardWidth, a.CardHeight, a.ContentHeight = layout.Width, layout.Height, layout.ContentHeight
 	a.Blocks, a.Panels, a.DrawIcons, a.Buttons, a.Body = layout.Blocks, layout.Panels, layout.Icons, layout.Buttons, layout.Body
@@ -67,6 +68,10 @@ func (a *App) paintCard(dst *PixelBuffer) {
 	for _, p := range a.Panels {
 		rr := a.shifted(p.Rect)
 		if rr.Bottom <= a.Body.Top || rr.Top >= a.Body.Bottom {
+			continue
+		}
+		if previewPanelKind(p.Kind) {
+			a.paintPreviewPanel(dst, p, rr, clip)
 			continue
 		}
 		switch p.Kind {
@@ -107,34 +112,5 @@ func (a *App) paintCard(dst *PixelBuffer) {
 	dst.RoundFrame(r, float64(a.S(14)), 1, c.Border, r)
 }
 func (a *App) paintButtons(dst *PixelBuffer, clip Rect) {
-	p := cursorPoint()
-	wr := windowRect(a.Popup)
-	if !wr.Contains(p) {
-		return
-	}
-	p.X -= wr.Left
-	p.Y -= wr.Top
-	for _, b := range a.Buttons {
-		r := a.buttonRect(b)
-		if r.Bottom <= a.Body.Top || r.Top >= a.Body.Bottom {
-			continue
-		}
-		col := a.Colors.Muted
-		if r.Contains(p) {
-			dst.RoundRect(r, float64(a.S(5)), a.Colors.Soft, clip)
-			col = a.Colors.Text
-		}
-		open := a.Settings.HourDetails
-		if b.ID == 6 {
-			open = a.Settings.DayDetails
-		}
-		cx, cy := float64(r.Left)+float64(r.W())/2, float64(r.Top)+float64(r.H())/2
-		d := float64(a.S(3))
-		dy := d / 2
-		if open {
-			dy = -dy
-		}
-		dst.Line(cx-d, cy-dy, cx, cy+dy, 1, col, clip)
-		dst.Line(cx, cy+dy, cx+d, cy-dy, 1, col, clip)
-	}
+	a.paintCardControls(dst, clip)
 }

@@ -20,7 +20,7 @@ func hasHan(s string) bool {
 	return false
 }
 func TestAstralBrandNames(t *testing.T) {
-	if appID != "Astral" || appNameZH != "七曜工作法" || appNameEN != "Astral Rhythm" || appVersion != "1.0.0" {
+	if appID != "Astral" || appNameZH != "七曜工作法" || appNameEN != "Astral Rhythm" || appVersion != "1.1.0" {
 		t.Fatal("incorrect product identity")
 	}
 	for _, lang := range []string{"zh-CN", "en"} {

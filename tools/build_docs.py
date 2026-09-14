@@ -1,6 +1,7 @@
 """Compose README artwork from native Windows UI exports. Never bundles fonts."""
 from pathlib import Path
 import math
+import re
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -64,11 +65,13 @@ def hero():
         paste(im, ASSETS/f'day-{(j+1)%7}-dark.png', (82+66*j, 703), 39)
     d.line((82, 792, 626, 792), fill='#3d5355', width=1)
     text(im, (82, 820), 'Windows  /  Offline  /  中文 + English', 20, MUTED, chinese=True)
-    text(im, (82, 902), 'ASTRAL RHYTHM  ·  1.0', 16, '#74938c')
+    text(im, (82, 902), 'ASTRAL RHYTHM  ·  '+re.search(r'const appVersion = "([^"]+)"', (ROOT/'src/locale.go').read_text(encoding='utf-8'))[1], 16, '#74938c')
     shadow = Image.new('RGBA', im.size)
     ImageDraw.Draw(shadow).rounded_rectangle((798, 91, 1338, 758), radius=30, fill=(0, 0, 0, 140))
     im.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(20)))
-    paste(im, OUT/'card-zh-CN-dark.png', (790, 82), 550)
+    with Image.open(OUT/'card-zh-CN-dark.png') as card:
+        card_width = min(550, round(680 * card.width/card.height))
+    paste(im, OUT/'card-zh-CN-dark.png', (790+(550-card_width)//2, 82), card_width)
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((791, 797, 1340, 887), radius=16, fill='#17282d', outline='#334b4d')
     paste(im, OUT/'taskbar-zh-CN-dark.png', (816, 808), 106)
